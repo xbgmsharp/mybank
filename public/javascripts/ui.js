@@ -21,10 +21,12 @@ $(document).ready(function() {
 		{
 				var file = objfiles[i];
                                 // Only process text or unknow file type.
+/*
                                 if (file.type && !file.type.match('text*') && file.type != "") {
                                         document.getElementById('list').innerHTML = '<ul style="background-color: red;"> Only text file are supported </ul>';
                                         return;
                                 }
+*/
 				// Only process file below 256k
 				if (file.size >= 262144) { // 256kb
 					document.getElementById('list').innerHTML += '<ul style="background-color: red;"> Only file below 256Kb are supported </ul>';
