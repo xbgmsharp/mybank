@@ -32,9 +32,10 @@ router.post('/', function(req, res) {
 		var queryString = "INSERT INTO current (`Date`, `Op`, `Montant`,  `Desc`, `Country`) SELECT * FROM (SELECT ?,?,?,?,?) AS tmp WHERE NOT EXISTS ( SELECT Date FROM current WHERE Date=? AND Op=? AND Montant=?) LIMIT 1";
 		var query = connection.query(queryString, [data.Date, data.Op, data.Montant, data.Desc, data.Country, data.Date, data.Op, data.Montant], function(err, rows) {
 	     	        console.log('The INSERT are date ['+ data.Date +'] and Op['+ data.Op +'] and Montant['+ data.Montant +']');
-	               	if (err) console.log(data.Op); throw err;
+	               	if (err) throw err;
 	              	console.log('The insert row is: ', rows.insertId);
 		});
+
 		console.log(query.sql);
 	}
 
@@ -43,47 +44,53 @@ router.post('/', function(req, res) {
 		res.writeHead(200, {'content-type': 'text/plain'});
 		res.write('received upload:\n\n');
 		console.log(files);
-		var stream = fs.createReadStream(files.upfile[0].path);
-
-		var csvStream = csv({delimiter:';', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
+		var csvStream1 = csv
+		 .fromPath(files.upfile[0].path, {delimiter:';', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
 		 .on("record", function(data){
 			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
-				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid()) {
-			 		console.log(data);
+				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid() && !moment(data.Op, 'DD/MM/YYYY').isValid()) {
 					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY/MM/DD');
-					console.log(data.Date);
-					data.Montant = data.IMPORTE.replace(",", ".").replace(" ", "");
-					data.Desc = "";
+					data.Montant = data.IMPORTE.replace(",", ".");
 					data.Country = "ES";
+					data.Desc = "";
+					if (data.Op.match(/GIGANEWS/)) { data.Desc = "GIGANEWS"; }
+			 		console.log(data);
 					dbinsert(data);
 				}
 			}
 		 })
+		 .on('error', function(error) {
+			console.log('Error SB '+ error);
+		 })
 		 .on("end", function(){
-		 	console.log("done");
+		 	console.log("done SB");
 		 });
-		 stream.pipe(csvStream);
 
-		csvStream = csv({delimiter:';', quote:'"', headers : ["FECHAOPER", "FECHAVALOR", "Op", "IMPORTE", "SALDO"]})
+		var csvStream2 = csv
+		 .fromPath(files.upfile[0].path, {delimiter:';', quote:'"', headers: true, headers : ["FECHAOPER", "FECHAVALOR", "Op", "IMPORTE", "SALDO"]})
 		 .on("record", function(data){
 			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
 				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid()) {
-			 		console.log(data);
 					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY/MM/DD');
-					console.log(data.Date);
-					data.Montant = data.IMPORTE.replace(",", ".").replace(" ", "");
+					data.Montant = data.IMPORTE.replace(",", ".");
 					data.Desc = "";
 					data.Country = "ES";
+					data.Desc = "";
+					if (data.Op.match(/GIGANEWS/)) { data.Desc = "GIGANEWS"; }
+			 		console.log(data);
 					dbinsert(data);
 				}
 			}
 		 })
+		 .on('error', function(error) {
+			console.log('Error ING '+ error);
+		 })
 		 .on("end", function(){
-		 	console.log("done");
+		 	console.log("done ING");
 		 });
-		 stream.pipe(csvStream);
 
-		 csvStream = csv({delimiter:'\t', quote:'"', headers : ["Date", "Op", "Montant"]})
+		var csvStream3 = csv
+		 .fromPath(files.upfile[0].path, {delimiter:'\t', quote:'"', headers : ["Date", "Op", "Montant"]})
 		 .on("record", function(data){
 			if (!data.Date.match(/^Compte/) && data.Date && data.Op && data.Montant && moment(data.Date, 'YYYY/MM/DD').isValid()) {
 			 	console.log(data);
@@ -103,11 +110,13 @@ router.post('/', function(req, res) {
 				dbinsert(data);
 			}
 		 })
+		 .on('error', function(error) {
+			console.log('Error BNP '+ error);
+		 })
 		 .on("end", function(){
-		 	console.log("done");
+		 	console.log("done BNP");
 		 });
-		 stream.pipe(csvStream);
-		
+	
 		fs.unlink(files.upfile[0].path, function(err) {
 		        if(err) console.error(err.stack);
 		});
