@@ -7,6 +7,7 @@ var multiparty = require('multiparty')
   , http = require('http')
   , util = require('util')
 var moment = require('moment');
+var iconv = require('iconv-lite');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -41,42 +42,24 @@ router.post('/', function(req, res) {
 
 	var form = new multiparty.Form();
 	form.parse(req, function(err, fields, files) {
-		res.writeHead(200, {'content-type': 'text/plain'});
-		res.write('received upload:\n\n');
 		console.log(files);
-		var csvStream1 = csv
-		 .fromPath(files.upfile[0].path, {delimiter:';', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
-		 .on("record", function(data){
-			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
-				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid() && !moment(data.Op, 'DD/MM/YYYY').isValid()) {
-					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY/MM/DD');
-					data.Montant = data.IMPORTE.replace(",", ".");
-					data.Country = "ES";
-					data.Desc = "";
-					if (data.Op.match(/GIGANEWS/)) { data.Desc = "GIGANEWS"; }
-			 		console.log(data);
-					dbinsert(data);
-				}
-			}
-		 })
-		 .on('error', function(error) {
-			console.log('Error SB '+ error);
-		 })
-		 .on("end", function(){
-		 	console.log("done SB");
-		 });
 
+		if (files.upfile[0].originalFilename.match(/movimientos.csv/)) { // IF BANK ING
+
+		var stream = fs.createReadStream(files.upfile[0].path, { encoding: 'utf8'} );
 		var csvStream2 = csv
-		 .fromPath(files.upfile[0].path, {delimiter:';', quote:'"', headers: true, headers : ["FECHAOPER", "FECHAVALOR", "Op", "IMPORTE", "SALDO"]})
+		 .fromStream(stream, {delimiter:';', quote:'"', headers: true, headers : ["FECHAOPER", "FECHAVALOR", "Op", "IMPORTE", "SALDO"]})
 		 .on("record", function(data){
 			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
 				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid()) {
 					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY/MM/DD');
-					data.Montant = data.IMPORTE.replace(",", ".");
+					data.Montant = data.IMPORTE.replace(",", ".").replace(" ", "");
 					data.Desc = "";
 					data.Country = "ES";
 					data.Desc = "";
 					if (data.Op.match(/GIGANEWS/)) { data.Desc = "GIGANEWS"; }
+					else if (data.Op.match(/NTT/)) { data.Desc = "Salaire"; }
+					else if (data.Op.match(/COFIBAR/)) { data.Desc = "Loyes ES"; }
 			 		console.log(data);
 					dbinsert(data);
 				}
@@ -87,10 +70,45 @@ router.post('/', function(req, res) {
 		 })
 		 .on("end", function(){
 		 	console.log("done ING");
+			res.send("received ID recorsds", {'Content-Type': 'text/plain'}, 200);
 		 });
+		}
 
+		if (!files.upfile[0].originalFilename.match(/movimientos.csv/) && files.upfile[0].originalFilename.match(/.csv/)) { // IF BANK SABADELL
+		var csvStream1 = csv
+		 .fromStream(stream, {delimiter:';', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
+		 .on("record", function(data){
+			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
+				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid() && !moment(data.Op, 'DD/MM/YYYY').isValid()) {
+					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY/MM/DD');
+					data.Montant = data.IMPORTE.replace(",", ".").replace(" ", "");
+					data.Country = "ES";
+					data.Desc = "";
+					if (data.Op.match(/NTT/)) { data.Desc = "Salaire"; }
+					else if (data.Op.match (/METRO BARCELONA-BARCELONA/)) { data.Desc = "Carte orange"; }
+					else if (data.Op.match (/GIGANEWS/)) { data.Desc = "GIGANEWS"; }
+					else if (data.Op.match (/ELECTRICIDAD /)) { data.Desc = "Loyer ES EDF"; }
+					else if (data.Op.match (/Gas Natural /)) { data.Desc = "Loyer ES Gaz"; }
+					else if (data.Op.match (/LINEA DIRECTA/)) { data.Desc = "Assurance scooter"; }
+					else if (data.Op.match (/TRASPASO A 0230-00012789-36/)) { data.Desc = "Loyer ES"; }
+					else if (data.Op.match (/AGUA/)) { data.Desc = "Loyer ES AGUA"; }
+			 		console.log(data);
+					dbinsert(data);
+				}
+			}
+		 })
+		 .on('error', function(error) {
+			console.log('Error SB '+ error);
+		 })
+		 .on("end", function(){
+		 	console.log("done SB");
+			res.send("received SB recorsds", {'Content-Type': 'text/plain'}, 200);
+		 });
+		}
+
+		if (files.upfile[0].originalFilename.match(/.exl/)) { // IF BANK BNP
 		var csvStream3 = csv
-		 .fromPath(files.upfile[0].path, {delimiter:'\t', quote:'"', headers : ["Date", "Op", "Montant"]})
+		 .fromSteam(stream, {delimiter:'\t', quote:'"', headers : ["Date", "Op", "Montant"]})
 		 .on("record", function(data){
 			if (!data.Date.match(/^Compte/) && data.Date && data.Op && data.Montant && moment(data.Date, 'YYYY/MM/DD').isValid()) {
 			 	console.log(data);
@@ -115,12 +133,16 @@ router.post('/', function(req, res) {
 		 })
 		 .on("end", function(){
 		 	console.log("done BNP");
+			res.send("received BNP recorsds", {'Content-Type': 'text/plain'}, 200);
 		 });
+		}
 	
 		fs.unlink(files.upfile[0].path, function(err) {
 		        if(err) console.error(err.stack);
 		});
-		res.end(util.inspect({fields: fields, files: files}));
+//		res.writeHead(200, {'content-type': 'text/plain'});
+//		res.write('received upload:\n\n');
+//		res.end(util.inspect({fields: fields, files: files}));
 	});
 
 	//res.send("", {'Content-Type': 'text/plain'}, 200);

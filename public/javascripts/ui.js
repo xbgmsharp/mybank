@@ -21,12 +21,10 @@ $(document).ready(function() {
 		{
 				var file = objfiles[i];
                                 // Only process text or unknow file type.
-/*
-                                if (file.type && !file.type.match('text*') && file.type != "") {
+                                if (file.type && (!file.type.match('text*') && !file.type.match('application')) && file.type != "") {
                                         document.getElementById('list').innerHTML = '<ul style="background-color: red;"> Only text file are supported </ul>';
                                         return;
                                 }
-*/
 				// Only process file below 256k
 				if (file.size >= 262144) { // 256kb
 					document.getElementById('list').innerHTML += '<ul style="background-color: red;"> Only file below 256Kb are supported </ul>';
@@ -44,21 +42,20 @@ $(document).ready(function() {
                                 // Closure to capture the file information.
                                 reader.onload = (function(theFile) {
                                         return function(e) {
-                                                        var content = e.target.result;
+                                                        //var content = e.target.result;
                                                         //$("#embed").val(content);
-                                                        if (content.indexOf("Compte") === -1) {
+                                                        /*if (content.indexOf("Compte") === -1) {
                                                                 document.getElementById('list').innerHTML +=
                                                                         '<ul style="background-color: red;"> Not a valid supported file </ul>';
-                                                       }
+                                                       }*/
                                                 };
                                 })(file);
 
                                 // Read in the text file as Text.
                                 reader.readAsText(file);
 				document.getElementById('embedfile').files[0] = file;
+                                document.getElementById('list').innerHTML += '<ul>' + output.join('') + '</ul>';
 				uploadFile(file);
-
-                               document.getElementById('list').innerHTML += '<ul>' + output.join('') + '</ul>';
 		}			
 	}
 

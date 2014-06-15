@@ -19,6 +19,7 @@
     "mysql": "2.x.x",
     "multiparty": "3.2.x",
     "fast-csv": "0.4.x",
-    "moment": "2.x.x"
+    "moment": "2.x.x",
+    "iconv-lite": "0.4.3"
   }
 }
