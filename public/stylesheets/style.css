@@ -1,0 +1,63 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding-top: 70px;
+  padding-bottom: 40px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.table tr.salaire, td.salaire {
+  background-color: #66FF00 !important;
+}
+
+.table tr.impot, td.impot {
+  background-color: #FF33CC !important;
+}
+
+.table tr.pret, td.pret {
+  background-color: #f00 !important;
+}
+
+.table tr.cardif, td.cardif {
+  background-color: #f00 !important;
+}
+
+.table tr.tel, td.tel {
+  background-color: #66CCFF !important;
+}
+
+.table tr.internet, td.internet {
+  background-color: #993399 !important;
+}
+
+.table tr.ratp, td.ratp {
+  background-color: #FFCC33 !important;
+}
+
+.table tr.loyeres, td.loyeres {
+  background-color: #780000 !important;
+}
+
+.table tr.loyerfr, td.loyerfr {
+  background-color: #006400 !important;
+}
+
+#drop_zone {
+  border: 2px dashed rgb(187, 187, 187);
+  border-radius: 5px 5px 5px 5px;
+  padding: 25px;
+  text-align: center;
+  color: rgb(187, 187, 187);
+}
+
+.form-horizontal .form-actions {
+  padding: 20px 10px 20px 180px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #F5F5F5;
+  border-top: 1px solid #E5E5E5;
+}
+

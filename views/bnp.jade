@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  div.container
+    div.content
+       form.form-horizontal(method="get", id="dateForm", name="dateForm")
+         fieldset
+           legend Filter
+         div.control-group
+           label Depuis le:
+           input.span(id="date1", type="text", name="date1", placeholder="Starting date", size="10", value=date1)
+           label Au:
+           input.span(id="date2", type="text", name="date2", placeholder="Ending date", size="10", value=date2)
+           input.btn(type="submit", value="Proceed >>", class="btn btn-large btn-primary")
+         br
+  div.container
+    div.content
+      fieldset
+        legend Report
+      table.table.table-striped
+        thead
+          tr
+            th Date
+            th Operation
+            th Montant
+            th Desc
+            th Pays
+        tbody
+          each entry, i in items
+            tr(class=entry.Class)
+              td(class=entry.Class)
+                a(href='/admin/' + entry.Id) #{entry.Date}
+              td(class=entry.Class)= entry.Op
+              td(class=entry.Class)= entry.Montant
+              td(class=entry.Class)= entry.Desc
+              td(class=entry.Class)= entry.Country
+
+  include inc/footer
