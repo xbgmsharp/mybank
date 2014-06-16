@@ -51,6 +51,21 @@ a {
   padding: 25px;
   text-align: center;
   color: rgb(187, 187, 187);
+  background: palegreen;
+}
+
+#drop_zone:hover
+{
+  background-color:lawngreen;
+}
+
+#dropzone:fade {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    opacity: 1;
 }
 
 .form-horizontal .form-actions {
