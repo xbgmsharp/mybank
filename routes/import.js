@@ -12,7 +12,7 @@ var iconv = require('iconv-lite');
 /* GET home page. */
 router.get('/', function(req, res) {
 
-	res.render('import', { title: 'My bank life' });
+	res.render('import', { title: 'My Bank v0.1' });
 });
 
 router.post('/', function(req, res) {

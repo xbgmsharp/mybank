@@ -62,7 +62,7 @@ router.get('/', function(req, res) {
 				if (rows[i].Desc.match(/^GIGANEWS/)) rows[i].Class = "giganews";
 			}
 		}
-		res.render('bnp', { "items" : rows, "date1": date1, "date2": date2, title: 'My bank life' });
+		res.render('bnp', { "items" : rows, "date1": date1, "date2": date2, title: 'My Bank v0.1' });
 	});
 	console.log(query.sql);
 
