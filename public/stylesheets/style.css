@@ -68,6 +68,13 @@ a {
     opacity: 1;
 }
 
+label.view {
+  display: inline !important;
+  margin-bottom: 15px !important;
+  font-weight: 400 !important;
+  margin-left: 8px !important;
+}
+
 .form-horizontal .form-actions {
   padding: 20px 10px 20px 180px;
   margin-top: 20px;

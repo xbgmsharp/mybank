@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 
 	// Mysql Connect
 	var connection = mysql.createConnection('mysql://root:admin@localhost/accounts?dateStrings=true');
-	//var connection = mysql.createConnection('mysql://root:kaya21@localhost:3307/comptes?dateStrings=true&stringifyObjects=true');
+        //var connection = mysql.createConnection('mysql://root:kaya21@localhost:3307/comptes?dateStrings=true&stringifyObjects=true');
 
 	connection.connect(function(err) {
 	  if (err) {
@@ -37,11 +37,21 @@ router.get('/', function(req, res) {
 
 	// List all records between date
 	console.log('The filter date1 is:', date1);
-	var queryString = "SELECT * FROM `current` WHERE `Date` >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND `Date` <= CURDATE() ORDER BY `Date` DESC";
-	if (date1 != ""){
-		queryString = "SELECT * FROM `current` WHERE `Date` >= ? AND `Date` <= ? ORDER BY `Date` DESC";
+	// Create DB query
+	var sql = "SELECT * FROM `current` WHERE";
+	if (date1 && date1 != ""){
+		sql += " `Date` >= ? AND `Date` <= ? ";
+	} else {
+		sql += " `Date` >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND `Date` <= CURDATE() ";
 	}
-	var query = connection.query(queryString, [date1, date2], function(err, rows) {
+	if (req.query.desc && req.query.desc != "") {
+		sql += " AND `Desc` Like '%"+ req.query.desc +"%' ";
+	}
+	if (req.query.country && req.query.country != "") {
+		sql += " AND `Country` = '"+ req.query.country +"' ";
+	}
+	sql += " ORDER BY `Date` DESC ";
+	var query = connection.query(sql, [date1, date2], function(err, rows) {
 		console.log('The filter are date1>='+ date1 +' and date2<='+ date2);
 		if (err) throw err;
 		console.log('The first row is: ', rows[0]);
@@ -62,7 +72,7 @@ router.get('/', function(req, res) {
 				if (rows[i].Desc.match(/^GIGANEWS/)) rows[i].Class = "giganews";
 			}
 		}
-		res.render('bnp', { "items" : rows, "date1": date1, "date2": date2, title: 'My Bank v0.1' });
+		res.render('bnp', { "items" : rows, "date1": date1, "date2": date2, "desc": req.query.desc, title: 'My Bank v0.1' });
 	});
 	console.log(query.sql);
 

@@ -7,12 +7,20 @@ block content
          fieldset
            legend Filter
          div.control-group
-           label Depuis le:
-           input.span(id="date1", type="text", name="date1", placeholder="Starting date", size="10", value=date1)
-           label Au:
-           input.span(id="date2", type="text", name="date2", placeholder="Ending date", size="10", value=date2)
+           label.view  Depuis le:
+             input.span(id="date1", type="text", name="date1", placeholder="Starting date", size="10", value=date1)
+           label.view  Au:
+             input.span(id="date2", type="text", name="date2", placeholder="Ending date", size="10", value=date2)
+           label.view  Country:
+             select(name="country")
+                option
+                option FR
+                option ES
+           label.view  Desc:
+             input.span(id="desc", type="text", name="desc", placeholder="desc", size="12", value=desc)
+           label.view
            input.btn(type="submit", value="Proceed >>", class="btn btn-large btn-primary")
-         br
+         p
   div.container
     div.content
       fieldset
