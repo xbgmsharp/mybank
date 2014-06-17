@@ -9,12 +9,12 @@ var multiparty = require('multiparty')
 var moment = require('moment');
 var iconv = require('iconv-lite');
 
-/* GET home page. */
+/* GET import page. */
 router.get('/', function(req, res) {
-
-	res.render('import', { title: 'My Bank v0.1' });
+	res.render('import', { title: 'My Bank v0.2' });
 });
 
+/* POST import page. */
 router.post('/', function(req, res) {
 
         // Mysql Connect
@@ -52,7 +52,7 @@ router.post('/', function(req, res) {
 		 .on("record", function(data){
 			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
 				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid()) {
-					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY/MM/DD');
+					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY-MM-DD');
 					data.Montant = data.IMPORTE.replace(",", ".").replace(" ", "");
 					data.Desc = "";
 					data.Country = "ES";
@@ -80,7 +80,7 @@ router.post('/', function(req, res) {
 		 .on("record", function(data){
 			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
 				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid() && !moment(data.Op, 'DD/MM/YYYY').isValid()) {
-					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY/MM/DD');
+					data.Date = moment(data.FECHAOPER, 'DD/MM/YYYY').format('YYYY-MM-DD');
 					data.Montant = data.IMPORTE.replace(",", ".").replace(" ", "");
 					data.Country = "ES";
 					data.Desc = "";

@@ -7,8 +7,9 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var about = require('./routes/about');
-var bnp = require('./routes/bnp');
-var cortal = require('./routes/cortal');
+var report = require('./routes/report');
+var graph = require('./routes/graph');
+var market = require('./routes/market');
 var upload = require('./routes/import');
 
 var app = express();
@@ -27,8 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/about', about);
-app.use('/bnp', bnp);
-app.use('/cortal', cortal);
+app.use('/report', report);
+app.use('/graph', graph);
+app.use('/market', market);
 app.use('/import', upload);
 
 /// catch 404 and forward to error handler

@@ -11,6 +11,9 @@ html(lang='en')
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/bootstrap/css/bootstrap-theme.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    // Should be placed at the end of the document so the pages load faster
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
   body
     .navbar.navbar-default.navbar-fixed-top(role='navigation')
         .container
@@ -20,10 +23,10 @@ html(lang='en')
                     span.icon-bar
                     span.icon-bar
                     span.icon-bar
-                a.navbar-brand(href='/') My Bank Life
+                a.navbar-brand(href='/') My Bank v0.2
             .navbar-collapse.collapse
                 ul.nav.navbar-nav
-                   - var obj = { 'bnp':'BNP', 'cortal':'Cortal', 'import':'Import', 'about':'About' }
+                   - var obj = { '/report':'Report', '/graph':'Graph', '/import':'Import', '/market':'Market', '/about':'About' }
                     - each val, key in obj
                       - if (id == key)
                         li.active
@@ -32,7 +35,3 @@ html(lang='en')
                         li
                           a(href='#{key}') #{val}
     block content
-    // Placed at the end of the document so the pages load faster
-    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
-    script(src='/bootstrap/js/bootstrap.min.js')
-    script(src='/javascripts/ui.js')

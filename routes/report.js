@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mysql  = require('mysql');
 
-/* GET home page. */
+/* GET report page. */
 router.get('/', function(req, res) {
 
 	var date1 = "";
@@ -72,7 +72,7 @@ router.get('/', function(req, res) {
 				if (rows[i].Desc.match(/^GIGANEWS/)) rows[i].Class = "giganews";
 			}
 		}
-		res.render('bnp', { "items" : rows, "date1": date1, "date2": date2, "desc": req.query.desc, title: 'My Bank v0.1' });
+		res.render('report', { "items" : rows, "date1": date1, "date2": date2, "desc": req.query.desc, title: 'My Bank v0.2' });
 	});
 	console.log(query.sql);
 

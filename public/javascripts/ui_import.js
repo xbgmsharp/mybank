@@ -3,17 +3,17 @@ $(document).ready(function() {
 	function uploadFile(filetoupload) {
           var formData = new FormData();
           formData.append('upfile', filetoupload);
-		$.ajax({
-		    url: '/import',
-		    data: formData,
-		    cache: false,
-		    contentType: false,
-		    processData: false,
-		    type: 'POST',
-		    success: function(data){
-		        console.log(data);
-		    }
-		});
+          $.ajax({
+	    url: '/import',
+	    data: formData,
+	    cache: false,
+	    contentType: false,
+	    processData: false,
+	    type: 'POST',
+	    success: function(data){
+	        console.log(data);
+	    }
+	  });
 	}
 
 	function handlefile(objfiles) {

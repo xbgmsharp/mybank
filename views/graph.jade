@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  div.container
+    div.content
+       form.form-horizontal(method="post", id="filterForm", name="filterForm", action="/graph")
+         fieldset
+           legend Filter
+         div.control-group
+           label.view  Depuis le:
+             input.span(id="date1", type="text", name="date1", placeholder="Starting date", size="10", value=date1)
+           label.view  Au:
+             input.span(id="date2", type="text", name="date2", placeholder="Ending date", size="10", value=date2)
+           label.view  Country:
+             select(name="country")
+                option
+                option FR
+                option ES
+           label.view  Desc:
+             input.span(id="desc", type="text", name="desc", placeholder="description", size="12", value=desc)
+           label.view
+           input.btn(type="submit", value="Proceed >>", class="btn btn-large btn-primary")
+         p
+  div.container
+    div.content
+      fieldset
+        legend Graph
+        canvas(id="chart_salaire", width="600", height="400")
+        canvas(id="chart_impot", width="600", height="400")
+        canvas(id="chart_pret", width="600", height="400")
+
+  include inc/footer
+
+  // RGraph Libraries
+  script(src='/RGraph/libraries/RGraph.common.core.js')
+  script(src='/RGraph/libraries/RGraph.common.context.js')
+  script(src='/RGraph/libraries/RGraph.common.annotate.js')
+  script(src='/RGraph/libraries/RGraph.common.tooltips.js')
+  script(src='/RGraph/libraries/RGraph.common.zoom.js')
+  script(src='/RGraph/libraries/RGraph.common.resizing.js')
+  script(src='/RGraph/libraries/RGraph.line.js')
+  script(src='/javascripts/ui_graph.js')
