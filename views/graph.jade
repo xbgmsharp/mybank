@@ -3,7 +3,7 @@ extends layout
 block content
   div.container
     div.content
-       form.form-horizontal(method="post", id="filterForm", name="filterForm", action="/graph")
+       form.form-horizontal(method="post", enctype="multipart/form-data", id="filterForm", name="filterForm", action="/graph")
          fieldset
            legend Filter
          div.control-group
@@ -25,18 +25,15 @@ block content
     div.content
       fieldset
         legend Graph
-        canvas(id="chart_salaire", width="600", height="400")
-        canvas(id="chart_impot", width="600", height="400")
-        canvas(id="chart_pret", width="600", height="400")
+        div.graph_salaire(id="graph_salaire")
+        div.graph_salaire(id="graph_salaire1")
+        div.graph_salaire(id="graph_salaire2")
 
   include inc/footer
 
-  // RGraph Libraries
-  script(src='/RGraph/libraries/RGraph.common.core.js')
-  script(src='/RGraph/libraries/RGraph.common.context.js')
-  script(src='/RGraph/libraries/RGraph.common.annotate.js')
-  script(src='/RGraph/libraries/RGraph.common.tooltips.js')
-  script(src='/RGraph/libraries/RGraph.common.zoom.js')
-  script(src='/RGraph/libraries/RGraph.common.resizing.js')
-  script(src='/RGraph/libraries/RGraph.line.js')
+  // Highcharts Libraries
+  script(src='/Highcharts/js/highcharts.js')
+  script(src='/Highcharts/js/modules/data.js')
+  script(src='/Highcharts/js/modules/exporting.js')
+  // My Library
   script(src='/javascripts/ui_graph.js')

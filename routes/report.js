@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var moment = require('moment');
 var mysql  = require('mysql');
 
 /* GET report page. */
@@ -22,14 +23,8 @@ router.get('/', function(req, res) {
 
 	// If no date fallback by default to today -1 year
 	if (!req.query.date1 || !req.query.date2) {
-		// Make MYSQL do the calculation for us
-		var queryString = "SELECT CURDATE() AS date2, DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AS date1";
-	        connection.query(queryString, function(err, rows) {
-			if (err) throw err;
-			date1 = rows[0].date1;
-			date2 = rows[0].date2;
-			console.log('The date is:', date2);
-		});
+		date1 = moment().subtract('years', 1).format("YYYY-MM-DD");
+		date2 = moment().format("YYYY-MM-DD");
 	} else {
 		date1 = req.query.date1;
 		date2 = req.query.date2;
