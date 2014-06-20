@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET about page. */
 router.get('/', function(req, res) {
-  res.render('about', { title: 'My Bank v0.2' });
+  res.render('about', { });
 });
 
 module.exports = router;

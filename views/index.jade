@@ -3,8 +3,8 @@ extends layout
 block content
   div.container
     div.jumbotron
-      h2= title
-      p Welcome to #{title}
+      h2= settings.title
+      p Welcome to #{settings.title} #{settings.version}
       p(style="text-align: center")
        a(href="/views"): img(src="/images/report.png", title="Report data", alt="Views data", width="250", height="250")
        a(href="/graph"): img(src="/images/chart.png", title="Graph data", alt="Graph data", width="250", height="250")

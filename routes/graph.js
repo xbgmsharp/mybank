@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
   date1 = moment().subtract('years', 3).format("YYYY-MM-DD");
   date2 = moment().format("YYYY-MM-DD");
 
-  res.render('graph', { 'date1': date1, 'date2': date2, title: 'My Bank v0.2' });
+  res.render('graph', { 'date1': date1, 'date2': date2 });
 });
 
 /* POST graph page. */

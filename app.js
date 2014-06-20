@@ -13,6 +13,8 @@ var market = require('./routes/market');
 var upload = require('./routes/import');
 
 var app = express();
+app.set('title', 'My bank');
+app.set('version', 'v0.3');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

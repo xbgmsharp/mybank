@@ -11,7 +11,7 @@ var iconv = require('iconv-lite');
 
 /* GET import page. */
 router.get('/', function(req, res) {
-	res.render('import', { title: 'My Bank v0.2' });
+	res.render('import', { });
 });
 
 /* POST import page. */
