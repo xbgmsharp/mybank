@@ -7,7 +7,7 @@ var multiparty = require('multiparty')
   , http = require('http')
   , util = require('util')
 var moment = require('moment');
-var iconv = require('iconv-lite');
+var iconvlite = require('iconv-lite');
 
 /* GET import page. */
 router.get('/', function(req, res) {
@@ -46,7 +46,8 @@ router.post('/', function(req, res) {
 
 		if (files.upfile[0].originalFilename.match(/movimientos.csv/)) { // IF BANK ING
 
-		var stream = fs.createReadStream(files.upfile[0].path, { encoding: 'utf8'} );
+		iconvlite.extendNodeEncodings(); // After this call all Node basic primitives will understand iconv-lite encodings.
+		var stream = fs.createReadStream(files.upfile[0].path, 'latin1');
 		var csvStream2 = csv
 		 .fromStream(stream, {delimiter:';', quote:'"', headers: true, headers : ["FECHAOPER", "FECHAVALOR", "Op", "IMPORTE", "SALDO"]})
 		 .on("record", function(data){
