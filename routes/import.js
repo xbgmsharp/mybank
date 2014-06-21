@@ -7,7 +7,7 @@ var multiparty = require('multiparty')
   , http = require('http')
   , util = require('util')
 var moment = require('moment');
-var iconvlite = require('iconv-lite');
+var iconv = require('iconv-lite');
 
 /* GET import page. */
 router.get('/', function(req, res) {
@@ -44,11 +44,10 @@ router.post('/', function(req, res) {
 	form.parse(req, function(err, fields, files) {
 		console.log(files);
 
-		if (files.upfile[0].originalFilename.match(/movimientos.csv/)) { // IF BANK ING
+		var stream = fs.createReadStream(files.upfile[0].path).pipe(iconv.decodeStream('latin1'));
 
-		iconvlite.extendNodeEncodings(); // After this call all Node basic primitives will understand iconv-lite encodings.
-		var stream = fs.createReadStream(files.upfile[0].path, 'latin1');
-		var csvStream2 = csv
+		if (files.upfile[0].originalFilename.match(/movimientos.csv/)) { // IF BANK ING
+		var csvStream1 = csv
 		 .fromStream(stream, {delimiter:';', quote:'"', headers: true, headers : ["FECHAOPER", "FECHAVALOR", "Op", "IMPORTE", "SALDO"]})
 		 .on("record", function(data){
 			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
@@ -76,8 +75,9 @@ router.post('/', function(req, res) {
 		}
 
 		if (!files.upfile[0].originalFilename.match(/movimientos.csv/) && files.upfile[0].originalFilename.match(/.csv/)) { // IF BANK SABADELL
-		var csvStream1 = csv
-		 .fromStream(stream, {delimiter:';', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
+		var csvStream2 = csv
+//		 .fromStream(stream, {delimiter:';', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
+		 .fromStream(stream, {delimiter:'|', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
 		 .on("record", function(data){
 			if (data.FECHAOPER && data.Op && data.IMPORTE && data.FECHAVALOR && data.SALDO) {
 				if (moment(data.FECHAOPER, 'DD/MM/YYYY').isValid() && moment(data.FECHAVALOR, 'DD/MM/YYYY').isValid() && !moment(data.Op, 'DD/MM/YYYY').isValid()) {
@@ -109,7 +109,7 @@ router.post('/', function(req, res) {
 
 		if (files.upfile[0].originalFilename.match(/.exl/)) { // IF BANK BNP
 		var csvStream3 = csv
-		 .fromSteam(stream, {delimiter:'\t', quote:'"', headers : ["Date", "Op", "Montant"]})
+		 .fromStream(stream, {delimiter:'\t', quote:'"', headers : ["Date", "Op", "Montant"]})
 		 .on("record", function(data){
 			if (!data.Date.match(/^Compte/) && data.Date && data.Op && data.Montant && moment(data.Date, 'YYYY/MM/DD').isValid()) {
 			 	console.log(data);
