@@ -46,7 +46,7 @@ router.post('/', function(req, res) {
 
 		var stream = fs.createReadStream(files.upfile[0].path).pipe(iconv.decodeStream('latin1'));
 
-		if (files.upfile[0].originalFilename.match(/movimientos.csv/)) { // IF BANK ING
+		if (files.upfile[0].originalFilename.match(/movimientos/) && files.upfile[0].originalFilename.match(/.csv/)) { // IF BANK ING
 		var csvStream1 = csv
 		 .fromStream(stream, {delimiter:';', quote:'"', headers: true, headers : ["FECHAOPER", "FECHAVALOR", "Op", "IMPORTE", "SALDO"]})
 		 .on("record", function(data){
@@ -74,7 +74,7 @@ router.post('/', function(req, res) {
 		 });
 		}
 
-		if (!files.upfile[0].originalFilename.match(/movimientos.csv/) && files.upfile[0].originalFilename.match(/.csv/)) { // IF BANK SABADELL
+		if (!files.upfile[0].originalFilename.match(/movimientos/) && files.upfile[0].originalFilename.match(/.csv/)) { // IF BANK SABADELL
 		var csvStream2 = csv
 //		 .fromStream(stream, {delimiter:';', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
 		 .fromStream(stream, {delimiter:'|', quote:'"', headers : ["FECHAOPER", "Op", "FECHAVALOR", "IMPORTE", "SALDO", "REFERENCIA 1", "REFERENCIA 2"]})
