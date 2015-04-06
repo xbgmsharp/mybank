@@ -16,6 +16,7 @@ router.get('/', function(req, res) {
 	connection.connect(function(err) {
 	  if (err) {
 	    console.error('error connecting: ' + err.stack);
+            res.render('error', { "message" : "Error connecting to database", "error" : err});
 	    return;
 	  }
 	  console.log('connected as id ' + connection.threadId);
@@ -47,8 +48,14 @@ router.get('/', function(req, res) {
 	}
 	sql += " ORDER BY `Date` DESC ";
 	var query = connection.query(sql, [date1, date2], function(err, rows) {
+
+		if (err) { // throw err;
+			console.error('error connecting: ' + err.stack);
+			res.render('error', { "message" : "Query database error", "error" : err});
+			return;
+		}
+
 		console.log('The filter are date1>='+ date1 +' and date2<='+ date2);
-		if (err) throw err;
 		console.log('The first row is: ', rows[0]);
 		// Assign a class for well know entry base on Op or Desc
 		for (var i in rows)

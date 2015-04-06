@@ -31,6 +31,7 @@ router.post('/', function(req, res) {
       connection.connect(function(err) {
          if (err) {
             console.error('error connecting: ' + err.stack);
+            res.render('error', { "message" : "Error connecting to database", "error" : err});
             return;
          }
          console.log('connected as id ' + connection.threadId);
@@ -51,7 +52,12 @@ router.post('/', function(req, res) {
       sql += " GROUP by MONTH(Date), YEAR(Date) ORDER BY `Date` ASC ";
 */
       var query = connection.query(sql, function(err, rows, fields) {
-          if (err) throw err;
+	if (err) {
+		console.error('error query: ' + err.stack);
+		res.render('error', { "message" : "Query database error", "error" : err});
+		return;
+	}
+
           //console.log('The fields: ', fields);
           console.log('The rows: ', rows);
           var json = new Array();
