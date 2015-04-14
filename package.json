@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git://github.com/xbgmsharp/mybank.git"
   },
-  "version": "0.0.2-9debafd",
+  "version": "0.0.2-8bb2b1b",
   "private": true,
   "license": "GPL-3.0+",
   "scripts": {
