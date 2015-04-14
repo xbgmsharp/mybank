@@ -3,8 +3,11 @@
   "description": "NodeJs PoC - My Bank",
   "author": "Francois Lacroix <xbgmsharp@gmail.com>",
   "readmeFilename": "README.md",
-  "repository" : {"type": "git", "url": "git://github.com/xbgmsharp/mybank.git"},
-  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xbgmsharp/mybank.git"
+  },
+  "version": "0.0.2-9debafd",
   "private": true,
   "license": "GPL-3.0+",
   "scripts": {
