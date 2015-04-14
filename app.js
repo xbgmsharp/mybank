@@ -1,3 +1,4 @@
+var package = require('./package.json');
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -13,8 +14,10 @@ var market = require('./routes/market');
 var upload = require('./routes/import');
 
 var app = express();
+
+// Set global package.json details for use in the webgui
+app.set('package', package);
 app.set('title', 'My bank');
-app.set('version', 'v0.3');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
