@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
 	var date2 = "";
 
 	// Mysql Connect
-	var connection = mysql.createConnection('mysql://root:root@localhost/accounts?dateStrings=true');
+	var connection = mysql.createConnection('mysql://root:root@localhost:3306/mybank?dateStrings=true');
 
 	connection.connect(function(err) {
 	  if (err) {

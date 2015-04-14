@@ -25,8 +25,7 @@ router.post('/', function(req, res) {
       //res.send(util.inspect({fields: fields, files: files}), {'Content-Type': 'text/plain'}, 200);
 
       // Mysql Connect
-      var connection = mysql.createConnection('mysql://root:admin@localhost/accounts?dateStrings=true&stringifyObjects=true');
-      //var connection = mysql.createConnection('mysql://root:kaya21@localhost:3307/comptes?dateStrings=true&stringifyObjects=true');
+      var connection = mysql.createConnection('mysql://root:root@localhost:3306/mybank?dateStrings=true');
 
       connection.connect(function(err) {
          if (err) {
