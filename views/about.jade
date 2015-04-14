@@ -4,5 +4,6 @@ block content
   div.container
     div.jumbotron
       h1= settings.title
-      p Welcome to #{settings.title} #{settings.version}
+      p Welcome to #{settings.package.description}
+      p Version #{settings.package.version}
   include inc/footer
