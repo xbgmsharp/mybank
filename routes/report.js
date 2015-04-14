@@ -10,8 +10,7 @@ router.get('/', function(req, res) {
 	var date2 = "";
 
 	// Mysql Connect
-	var connection = mysql.createConnection('mysql://root:admin@localhost/accounts?dateStrings=true');
-        //var connection = mysql.createConnection('mysql://root:kaya21@localhost:3307/comptes?dateStrings=true&stringifyObjects=true');
+	var connection = mysql.createConnection('mysql://root:root@localhost/accounts?dateStrings=true');
 
 	connection.connect(function(err) {
 	  if (err) {
@@ -24,7 +23,7 @@ router.get('/', function(req, res) {
 
 	// If no date fallback by default to today -1 year
 	if (!req.query.date1 || !req.query.date2) {
-		date1 = moment().subtract('years', 1).format("YYYY-MM-DD");
+		date1 = moment().subtract(1, 'years').format("YYYY-MM-DD");
 		date2 = moment().format("YYYY-MM-DD");
 	} else {
 		date1 = req.query.date1;
