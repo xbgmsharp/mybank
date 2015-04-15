@@ -38,11 +38,19 @@ a {
 }
 
 .table tr.loyeres, td.loyeres {
-  background-color: #780000 !important;
+  background-color: #006200 !important;
 }
 
 .table tr.loyerfr, td.loyerfr {
   background-color: #006400 !important;
+}
+
+.table tr.loyeruk, td.loyeruk {
+  background-color: #006300 !important;
+}
+
+.table tr.giganews, td.giganews {
+  background-color: #780000 !important;
 }
 
 #drop_zone {

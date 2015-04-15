@@ -56,19 +56,23 @@ router.get('/', function(req, res) {
 
 		console.log('The filter are date1>='+ date1 +' and date2<='+ date2);
 		console.log('The first row is: ', rows[0]);
-		// Assign a class for well know entry base on Op or Desc
+		// Assign a CSS class for well know entry base on Op or Desc
 		for (var i in rows)
 		{
 			if (rows[i].Op) {
 				if (rows[i].Op.match(/TRESOR PUBLIC/) || rows[i].Op.match(/D.G.F.I.P./)) rows[i].Class = "impot";
 				if (rows[i].Op.match(/CARDIF/)) rows[i].Class = "cardif";
 				if (rows[i].Op.match(/^INTERETS ET COMMISSIONS PRET/) || rows[i].Op.match(/^ECHEANCE PRET/)) rows[i].Class = "pret";
-				if (rows[i].Op.match(/METRO/) || rows[i].Op.match(/RATP/)) rows[i].Class = "ratp";
+				// MATCH TESCO TO IMPROVE...
+				//if (rows[i].Op.match(/METRO/) || rows[i].Op.match(/RATP/)) rows[i].Class = "ratp";
 			}
 			if (rows[i].Desc) {
 				if (rows[i].Desc.match(/^Salaire/)) rows[i].Class = "salaire";
+				if (rows[i].Desc.match(/^Pret/)) rows[i].Class = "pret";
+				if (rows[i].Desc.match(/^Impot/)) rows[i].Class = "impot";
 				if (rows[i].Desc.match(/^Loyer FR/)) rows[i].Class = "loyerfr";
 				if (rows[i].Desc.match(/^Loyer ES/)) rows[i].Class = "loyeres";
+				if (rows[i].Desc.match(/^Loyer UK/)) rows[i].Class = "loyeruk";
 				if (rows[i].Desc.match(/^Internet/)) rows[i].Class = "internet";
 				if (rows[i].Desc.match(/^GIGANEWS/)) rows[i].Class = "giganews";
 			}

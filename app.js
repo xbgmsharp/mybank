@@ -13,6 +13,7 @@ var graph = require('./routes/graph');
 var market = require('./routes/market');
 var upload = require('./routes/import');
 
+// Initiliaze the app
 var app = express();
 
 // Set global package.json details for use in the webgui
