@@ -203,8 +203,16 @@ router.post('/', function(req, res) {
 					data.Desc = "";
 					data.Country = "UK";
 					if (data.Op.match(/TESCO/)) { data.Desc = "Course"; }
-					else if (data.Op.match(/SAINSBURYS/)) { data.Desc = "Course"; }
+					else if (data.Op.match(/SAINSBURY/)) { data.Desc = "Course"; }
+					else if (data.Op.match(/COSTCUTTER/)) { data.Desc = "Course"; }
 					else if (data.Op.match(/VERIZON/)) { data.Desc = "Salaire"; }
+					else if (data.Op.match(/Transferwise/)) { data.Desc = "Economie UK"; }
+					else if (data.Op.match(/^TFR FORGN /)) { data.Desc = "Economie UK"; }
+					else if (data.Op.match(/SALISBURY/)) { data.Desc = "Pub"; }
+					else if (data.Op.match(/DICKENS INN/)) { data.Desc = "Pub"; }
+					else if (data.Op.match(/TWO BREWERS/)) { data.Desc = "Pub"; }
+					else if (data.Op.match(/THE FALTERING FULL/)) { data.Desc = "Pub"; }
+					else if (data.Op.match(/ALL BAR ONE/)) { data.Desc = "Pub"; }
 					console.log(data);
 					dbinsert(data);
 				}
