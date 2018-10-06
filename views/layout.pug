@@ -27,11 +27,11 @@ html(lang='en')
             .navbar-collapse.collapse
                 ul.nav.navbar-nav
                    - var obj = { '/report':'Report', '/graph':'Graph', '/import':'Import', '/market':'Market', '/about':'About' }
-                    - each val, key in obj
-                      - if (id == key)
+                    each val, key in obj
+                      if (id == key)
                         li.active
-                          a(href='#{key}') #{val}
-                      - else
+                          a(href=''+ key) #{val}
+                      else
                         li
-                          a(href='#{key}') #{val}
+                          a(href=''+ key) #{val}
     block content
