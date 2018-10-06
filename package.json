@@ -14,11 +14,11 @@
   "dependencies": {
     "body-parser": "~1.0.0",
     "cookie-parser": "~1.0.1",
-    "debug": "~0.7.4",
+    "debug": "^4.0.1",
     "express": "~4.2.0",
     "fast-csv": "0.4.x",
     "iconv-lite": "0.4.3",
-    "moment": "2.x.x",
+    "moment": "^2.22.2",
     "morgan": "~1.0.0",
     "multiparty": "3.2.x",
     "mysql": "2.x.x",
